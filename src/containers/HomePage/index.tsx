@@ -1,11 +1,12 @@
 import * as React from "react"
+import "./style.scss"
 
 interface IHomePageProps {}
 
 const HomePage: React.FunctionComponent<IHomePageProps> = (props) => {
   return (
-    <div>
-      <h1>Home Page</h1>
+    <div className="homepage-container">
+      <div className="cover-image"></div>
     </div>
   )
 }
