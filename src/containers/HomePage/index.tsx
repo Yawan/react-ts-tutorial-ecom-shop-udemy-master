@@ -1,4 +1,5 @@
 import * as React from "react"
+import ShopQuality from "../../components/ShopQuality"
 import "./style.scss"
 
 interface IHomePageProps {}
@@ -6,7 +7,8 @@ interface IHomePageProps {}
 const HomePage: React.FunctionComponent<IHomePageProps> = (props) => {
   return (
     <div className="homepage-container">
-      <div className="cover-image"></div>
+      <div className="cover-image" />
+      <ShopQuality />
     </div>
   )
 }
