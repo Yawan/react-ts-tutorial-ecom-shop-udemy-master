@@ -1,0 +1,35 @@
+.partners-container {
+    margin-top: 200px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.partners-list {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 100px;
+    width: 60%;
+    flex-wrap: wrap;
+
+    .partner-item {
+        height: 75px;
+        width: 150px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+    }
+
+    .amazon {
+        background-image: url("../../img/amazon.JPG");
+    }
+
+    .shopify {
+        background-image: url("../../img/shopify.JPG");
+    }
+
+    .wix {
+        background-image: url("../../img/wix.JPG");
+    }
+}
