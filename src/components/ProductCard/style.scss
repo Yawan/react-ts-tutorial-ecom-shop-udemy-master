@@ -1,0 +1,23 @@
+.product-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  text-align: center;
+  cursor: pointer;
+
+  .product-img {
+    min-height: 200px;
+    width: 300px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+
+  &:hover {
+    box-shadow: 0 1px 6px rgba(0, 0, 0, .3);
+    transform: scale(1.05)
+  }
+
+  // .product-details {}
+}

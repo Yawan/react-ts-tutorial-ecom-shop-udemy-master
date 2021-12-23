@@ -1,10 +1,11 @@
 .homepage-container {
   .cover-image {
-    height: 800px;
+    height: 36vw;
+    width: 100%;
     background: url("../../img/coverimage.JPG");
+    background-position: 50% 20%;
     background-repeat: no-repeat;
     background-size: cover;
-
     // transition: transform 2s;
     // &:hover {
     //   transform: scale(1.1);
