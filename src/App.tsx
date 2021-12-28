@@ -1,16 +1,26 @@
-import "./App.css"
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
-
-import CheckoutPage from "./containers/CheckoutPage"
-import AllProductsPage from "./containers/AllProductsPage"
-import HomePage from "./containers/HomePage"
-import { ROUTE } from "./constants/route"
-import HeaderNavigation from "./components/HeaderNavigation"
-import { createStore } from "redux"
-import { rootReducer } from "./store/reducers"
+// 3rd party packages
+import createSagaMiddleware from "@redux-saga/core"
 import { Provider } from "react-redux"
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
+import { applyMiddleware, createStore } from "redux"
 
-const store = createStore(rootReducer)
+import "./App.css"
+import HeaderNavigation from "./components/HeaderNavigation"
+import { ROUTE } from "./constants/route"
+import AllProductsPage from "./containers/AllProductsPage"
+import CheckoutPage from "./containers/CheckoutPage"
+import HomePage from "./containers/HomePage"
+import { ProductDetailActionType } from "./store/action-types"
+import { rootReducer } from "./store/reducers"
+import rootSaga from "./store/sagas"
+
+const sagaMiddleware = createSagaMiddleware()
+
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleware))
+sagaMiddleware.run(rootSaga)
+
+store.dispatch({ type: ProductDetailActionType.FETCH })
+;(window as any).shospree = store
 
 function App() {
   return (
