@@ -16,7 +16,6 @@ export interface Product {
   id: string
   category: string[]
   title: string
-  isBestSeller?: boolean
   variants: ProductVariants[]
 }
 export interface ProductDetails {
@@ -24,6 +23,7 @@ export interface ProductDetails {
   page?: number
   nextPage?: boolean
   productsCount: number
+  totalPages?: number
 }
 
 const initialState = {

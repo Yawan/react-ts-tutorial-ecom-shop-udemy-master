@@ -1,12 +1,14 @@
+import { GetProductOptions } from "../../api/ProductDetailsAPI"
 import { ProductDetailActionType } from "../action-types"
 import { ProductDetails } from "../reducers/productDetailsReducer"
 
-interface SetAction {
+export interface SetAction {
   type: ProductDetailActionType.SET
   productDetails: ProductDetails
 }
-interface FetchAction {
+export interface FetchAction {
   type: ProductDetailActionType.FETCH
+  options: GetProductOptions
 }
 
 export type ProductDetailsAction = SetAction | FetchAction

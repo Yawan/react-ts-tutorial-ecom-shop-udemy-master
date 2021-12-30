@@ -1,9 +1,9 @@
 import * as React from "react"
-import { useSelector } from "react-redux"
-
-// import * as actionCreators from "../../store/action-creators"
-// import { bindActionCreators } from "redux"
+import { useDispatch, useSelector } from "react-redux"
+import { bindActionCreators } from "redux"
 import ProductCard from "../../components/ProductCard"
+import { actionCreators } from "../../store"
+import { ProductDetailActionType } from "../../store/action-types"
 import { RootState } from "../../store/reducers"
 import "./style.scss"
 
@@ -13,8 +13,21 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
   props
 ) => {
   const productDetails = useSelector((state: RootState) => state.productDetails)
-  // const dispatch = useDispatch()
-  // const { fetchProductDetails } = bindActionCreators(actionCreators, dispatch)
+
+  const dispatch = useDispatch()
+
+  // todo: check how to make this work.
+  const { setProductDetails } = bindActionCreators(actionCreators, dispatch)
+
+  React.useEffect(() => {
+    const fetchProductDetails = () => {
+      dispatch({
+        type: ProductDetailActionType.FETCH,
+        options: {},
+      })
+    }
+    fetchProductDetails()
+  }, [dispatch])
 
   const renderAllProducts = () => {
     return productDetails.products.map(({ id, title, variants }) => {
