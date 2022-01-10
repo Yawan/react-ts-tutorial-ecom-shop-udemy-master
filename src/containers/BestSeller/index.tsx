@@ -1,26 +1,36 @@
-import * as React from "react"
+import React, { useCallback } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import ProductCard from "../../components/ProductCard"
+import { ProductDetailActionType } from "../../store/action-types"
+import { RootState } from "../../store/reducers"
 import "./style.scss"
-
 interface IBestSellerProps {}
 
 const BestSeller: React.FunctionComponent<IBestSellerProps> = (props) => {
+  const { bestSellerProducts } = useSelector(
+    (state: RootState) => state.productDetails
+  )
+
+  const dispatch = useDispatch()
+  const fetchAllBestSellerProducts = useCallback(() => {
+    dispatch({ type: ProductDetailActionType.FETCH_ALL_BEST_SELLER_PRODUCTS })
+    // console.log("useCallback fetchAllBestSellerProducts")
+  }, [dispatch])
+
+  React.useEffect(() => {
+    if (!bestSellerProducts.length) {
+      fetchAllBestSellerProducts()
+      // console.log("useEffect fetchAllBestSellerProducts")
+    }
+  }, [fetchAllBestSellerProducts, bestSellerProducts])
+
   return (
     <div className="best-seller-container">
       <h2>Best Seller</h2>
       <div className="best-seller-products">
-        <ProductCard
-          url="http://localhost:1234/public/images/Formal%20Dress%20Shirts%20Casual%20Long%20Sleeve%20Slim%20Fit%20-%20Blue.png"
-          name="Formal Dress Shirts Casual Long Sleeve Slim Fit"
-        />
-        <ProductCard
-          url="http://localhost:1234/public/images/Formal%20Dress%20Shirts%20Casual%20Short%20Sleeve%20Slim%20Fit%20-%20Blue.png"
-          name="Formal Dress Shirts Casual Short Sleeve Slim Fit"
-        />
-        <ProductCard
-          url="http://localhost:1234/public/images/Soft%20Summer%20Short%20Slim%20Fit%20-%20Gray.png"
-          name="Soft Summer Short Slim Fit"
-        />
+        {bestSellerProducts.map((product) => (
+          <ProductCard url={product.variants[0].image} name={product.title} />
+        ))}
       </div>
     </div>
   )
