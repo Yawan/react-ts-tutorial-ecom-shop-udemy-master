@@ -16,10 +16,6 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
 
   const dispatch = useDispatch()
 
-  // todo: check how to make this work.
-  // apply middleware with thunk
-  // const { setProductDetails } = bindActionCreators(actionCreators, dispatch)
-
   const fetchAllProducts = useCallback(() => {
     dispatch({
       type: ProductDetailActionType.FETCH_SHOP_PRODUCTS,
