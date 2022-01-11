@@ -6,6 +6,7 @@ export interface GetProductOptions {
   category?: string[]
 }
 class ShopAPI {
+  baseUrl = "http://localhost:1234"
   getProduct = (options: GetProductOptions) => {
     const { page, size, category } = options
 
@@ -16,8 +17,11 @@ class ShopAPI {
     }`
 
     return axios.get(
-      `http://localhost:1234/products?${pageQueryParam}${sizeQueryParam}${categoryQueryParam}`
+      `${this.baseUrl}/products?${pageQueryParam}${sizeQueryParam}${categoryQueryParam}`
     )
+  }
+  getProductFilter = () => {
+    return axios.get(`${this.baseUrl}/productFilters`)
   }
 }
 

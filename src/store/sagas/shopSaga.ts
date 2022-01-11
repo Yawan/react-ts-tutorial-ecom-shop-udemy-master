@@ -2,9 +2,9 @@ import { call, put, takeLatest } from "redux-saga/effects"
 import ShopAPI from "../../api/ShopAPI"
 import { ShopActionType } from "../action-types"
 import { FetchShopProductsAction, ShopAction } from "../actions/ShopAction"
-import { ShopProducts } from "../reducers/shopReducer"
+import { ProductFilters, ShopProducts } from "../reducers/shopReducer"
 
-function* workerFetchShopProductSage(action: FetchShopProductsAction): any {
+function* workerFetchShopProductsSage(action: FetchShopProductsAction): any {
   const shopAPI = new ShopAPI()
 
   try {
@@ -39,13 +39,40 @@ function* workerFetchBestSellerSage(): any {
   }
 }
 
+function* workerFetchShopProductsAndFilterSage(
+  action: FetchShopProductsAction
+): any {
+  const shopAPI = new ShopAPI()
+
+  try {
+    const productResponse = yield call(shopAPI.getProduct, {})
+    const productFilterResponse = yield call(shopAPI.getProductFilter)
+    const shopProducts = productResponse.data as ShopProducts
+    const productFilters = productFilterResponse.data as ProductFilters
+
+    // console.log("saga", shopProducts)
+    yield put<ShopAction>({
+      type: ShopActionType.SET_SHOP_PRODUCTS_AND_FILTERS,
+      shopProducts,
+      productFilters,
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export function* watchShopSaga() {
   yield takeLatest(
     ShopActionType.FETCH_SHOP_PRODUCTS,
-    workerFetchShopProductSage
+    workerFetchShopProductsSage
   )
   yield takeLatest(
     ShopActionType.FETCH_ALL_BEST_SELLER_PRODUCTS,
     workerFetchBestSellerSage
+  )
+
+  yield takeLatest(
+    ShopActionType.FETCH_SHOP_PRODUCTS_AND_FILTERS,
+    workerFetchShopProductsAndFilterSage
   )
 }

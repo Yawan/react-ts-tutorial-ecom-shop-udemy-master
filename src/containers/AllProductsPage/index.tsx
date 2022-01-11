@@ -10,14 +10,19 @@ interface IAllProductsPageProps {}
 const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
   props
 ) => {
-  const { shopProducts } = useSelector((state: RootState) => state.shop)
+  const { shopProducts, productFilters } = useSelector(
+    (state: RootState) => state.shop
+  )
 
   const dispatch = useDispatch()
 
   const fetchAllProducts = useCallback(() => {
+    // dispatch({
+    //   type: ShopActionType.FETCH_SHOP_PRODUCTS,
+    //   options: {},
+    // })
     dispatch({
-      type: ShopActionType.FETCH_SHOP_PRODUCTS,
-      options: {},
+      type: ShopActionType.FETCH_SHOP_PRODUCTS_AND_FILTERS,
     })
     // console.log("useCallback fetchAllProducts")
   }, [dispatch])

@@ -26,15 +26,26 @@ export interface ShopProducts {
   totalPages?: number
 }
 
+export interface ProductFilters {
+  gender: string[]
+  category: string[]
+  trends: string[]
+}
 export interface Shop {
   shopProducts: ShopProducts
   bestSellerProducts: Product[]
+  productFilters: ProductFilters
 }
 
 const initialState: Shop = {
   shopProducts: {
     products: [],
     productsCount: 0,
+  },
+  productFilters: {
+    gender: [],
+    category: [],
+    trends: [],
   },
   bestSellerProducts: [],
 }
@@ -44,9 +55,13 @@ export const shopReducer: Reducer<Shop, ShopAction> = (
   action
 ) => {
   switch (action.type) {
+    case ShopActionType.SET_SHOP_PRODUCTS_AND_FILTERS:
+      const { productFilters, shopProducts } = action
+      return { ...state, productFilters, shopProducts }
     case ShopActionType.SET_SHOP_PRODUCTS:
-      const { shopProducts } = action
-      return { ...state, shopProducts }
+      // const { shopProducts } = action // compile error
+      const _shopProducts = action.shopProducts
+      return { ...state, shopProducts: _shopProducts }
     case ShopActionType.SET_ALL_BEST_SELLER_PRODUCTS:
       const { bestSellerProducts } = action
       return { ...state, bestSellerProducts }

@@ -1,6 +1,6 @@
 import { GetProductOptions } from "../../api/ShopAPI"
 import { ShopActionType } from "../action-types"
-import { Product, ShopProducts } from "../reducers/shopReducer"
+import { Product, ProductFilters, ShopProducts } from "../reducers/shopReducer"
 
 export interface FetchShopProductsAction {
   type: ShopActionType.FETCH_SHOP_PRODUCTS
@@ -19,8 +19,19 @@ export interface SetBestSellerProductsAction {
   bestSellerProducts: Product[]
 }
 
+export interface FetchShopProductsAndFiltersAction {
+  type: ShopActionType.FETCH_SHOP_PRODUCTS_AND_FILTERS
+}
+export interface SetShopProductsAndFiltersAction {
+  type: ShopActionType.SET_SHOP_PRODUCTS_AND_FILTERS
+  shopProducts: ShopProducts
+  productFilters: ProductFilters
+}
+
 export type ShopAction =
   | FetchShopProductsAction
   | SetShopProductsAction
   | FetchBestSellerProductsAction
   | SetBestSellerProductsAction
+  | FetchShopProductsAndFiltersAction
+  | SetShopProductsAndFiltersAction
