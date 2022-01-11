@@ -1,9 +1,7 @@
-import * as React from "react"
-import { useSelector } from "react-redux"
-
-// import * as actionCreators from "../../store/action-creators"
-// import { bindActionCreators } from "redux"
+import React, { useCallback, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import ProductCard from "../../components/ProductCard"
+import { ProductDetailActionType } from "../../store/action-types"
 import { RootState } from "../../store/reducers"
 import "./style.scss"
 
@@ -12,12 +10,29 @@ interface IAllProductsPageProps {}
 const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
   props
 ) => {
-  const productDetails = useSelector((state: RootState) => state.productDetails)
-  // const dispatch = useDispatch()
-  // const { fetchProductDetails } = bindActionCreators(actionCreators, dispatch)
+  const { shopProducts } = useSelector(
+    (state: RootState) => state.productDetails
+  )
+
+  const dispatch = useDispatch()
+
+  const fetchAllProducts = useCallback(() => {
+    dispatch({
+      type: ProductDetailActionType.FETCH_SHOP_PRODUCTS,
+      options: {},
+    })
+    // console.log("useCallback fetchAllProducts")
+  }, [dispatch])
+
+  useEffect(() => {
+    if (!shopProducts.products.length) {
+      fetchAllProducts()
+      // console.log("useEffect fetchAllProducts()")
+    }
+  }, [fetchAllProducts, shopProducts.products])
 
   const renderAllProducts = () => {
-    return productDetails.products.map(({ id, title, variants }) => {
+    return shopProducts.products.map(({ id, title, variants }) => {
       return (
         <div className="product-item-container" key={id}>
           <ProductCard name={title} url={variants[0].image} />

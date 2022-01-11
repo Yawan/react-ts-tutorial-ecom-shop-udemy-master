@@ -16,19 +16,27 @@ export interface Product {
   id: string
   category: string[]
   title: string
-  isBestSeller?: boolean
   variants: ProductVariants[]
 }
-export interface ProductDetails {
+export interface ShopProducts {
   products: Product[]
   page?: number
   nextPage?: boolean
   productsCount: number
+  totalPages?: number
 }
 
-const initialState = {
-  products: [],
-  productsCount: 0,
+export interface ProductDetails {
+  shopProducts: ShopProducts
+  bestSellerProducts: Product[]
+}
+
+const initialState: ProductDetails = {
+  shopProducts: {
+    products: [],
+    productsCount: 0,
+  },
+  bestSellerProducts: [],
 }
 
 export const productDetailsReducer: Reducer<
@@ -36,8 +44,12 @@ export const productDetailsReducer: Reducer<
   ProductDetailsAction
 > = (state = initialState, action) => {
   switch (action.type) {
-    case ProductDetailActionType.SET:
-      return action.productDetails
+    case ProductDetailActionType.SET_SHOP_PRODUCTS:
+      const { shopProducts } = action
+      return { ...state, shopProducts }
+    case ProductDetailActionType.SET_ALL_BEST_SELLER_PRODUCTS:
+      const { bestSellerProducts } = action
+      return { ...state, bestSellerProducts }
     default:
       return state
   }
