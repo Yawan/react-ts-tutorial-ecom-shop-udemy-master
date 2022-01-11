@@ -1,6 +1,6 @@
 import { Reducer } from "redux"
-import { ProductDetailActionType } from "../action-types"
-import { ProductDetailsAction } from "../actions/productDetailsAction"
+import { ShopActionType } from "../action-types"
+import { ShopAction } from "../actions/ShopAction"
 
 export interface ProductVariants {
   id: string
@@ -26,12 +26,12 @@ export interface ShopProducts {
   totalPages?: number
 }
 
-export interface ProductDetails {
+export interface Shop {
   shopProducts: ShopProducts
   bestSellerProducts: Product[]
 }
 
-const initialState: ProductDetails = {
+const initialState: Shop = {
   shopProducts: {
     products: [],
     productsCount: 0,
@@ -39,15 +39,15 @@ const initialState: ProductDetails = {
   bestSellerProducts: [],
 }
 
-export const productDetailsReducer: Reducer<
-  ProductDetails,
-  ProductDetailsAction
-> = (state = initialState, action) => {
+export const shopReducer: Reducer<Shop, ShopAction> = (
+  state = initialState,
+  action
+) => {
   switch (action.type) {
-    case ProductDetailActionType.SET_SHOP_PRODUCTS:
+    case ShopActionType.SET_SHOP_PRODUCTS:
       const { shopProducts } = action
       return { ...state, shopProducts }
-    case ProductDetailActionType.SET_ALL_BEST_SELLER_PRODUCTS:
+    case ShopActionType.SET_ALL_BEST_SELLER_PRODUCTS:
       const { bestSellerProducts } = action
       return { ...state, bestSellerProducts }
     default:

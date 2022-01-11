@@ -5,7 +5,7 @@ export interface GetProductOptions {
   size?: number
   category?: string[]
 }
-class ProductDetailsAPI {
+class ShopAPI {
   getProduct = (options: GetProductOptions) => {
     const { page, size, category } = options
 
@@ -21,4 +21,4 @@ class ProductDetailsAPI {
   }
 }
 
-export default ProductDetailsAPI
+export default ShopAPI

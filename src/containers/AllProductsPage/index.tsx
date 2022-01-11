@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import ProductCard from "../../components/ProductCard"
-import { ProductDetailActionType } from "../../store/action-types"
+import { ShopActionType } from "../../store/action-types"
 import { RootState } from "../../store/reducers"
 import "./style.scss"
 
@@ -10,15 +10,13 @@ interface IAllProductsPageProps {}
 const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
   props
 ) => {
-  const { shopProducts } = useSelector(
-    (state: RootState) => state.productDetails
-  )
+  const { shopProducts } = useSelector((state: RootState) => state.shop)
 
   const dispatch = useDispatch()
 
   const fetchAllProducts = useCallback(() => {
     dispatch({
-      type: ProductDetailActionType.FETCH_SHOP_PRODUCTS,
+      type: ShopActionType.FETCH_SHOP_PRODUCTS,
       options: {},
     })
     // console.log("useCallback fetchAllProducts")

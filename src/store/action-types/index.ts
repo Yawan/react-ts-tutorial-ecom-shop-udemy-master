@@ -3,7 +3,7 @@
  */
 
 // ProductDetail Actions
-export enum ProductDetailActionType {
+export enum ShopActionType {
   SET_SHOP_PRODUCTS = "SET_SHOP_PRODUCTS",
   FETCH_SHOP_PRODUCTS = "FETCH_SHOP_PRODUCTS",
   FETCH_ALL_BEST_SELLER_PRODUCTS = "FETCH_ALL_BEST_SELLER_PRODUCTS",
