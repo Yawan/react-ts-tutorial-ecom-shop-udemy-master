@@ -1,5 +1,6 @@
 import * as React from "react"
 import { ProductFilters } from "../../store/reducers/shopReducer"
+import { capitalizeFirstLetter } from "../../utils/helper"
 import Checkbox from "../ui/CheckBox"
 import "./style.scss"
 
@@ -15,7 +16,7 @@ const AllProductsSideBar: React.FunctionComponent<IAllProductsSideBarProps> = ({
       const filterValues = productFilters[filterKey as keyof ProductFilters]
       return (
         <div className="product-filter" key={filterKey}>
-          <p>{filterKey}</p>
+          <p>{capitalizeFirstLetter(filterKey)}</p>
           {filterValues.map((filterValue) => {
             return (
               <div className="filter-checkbox" key={filterValue}>
