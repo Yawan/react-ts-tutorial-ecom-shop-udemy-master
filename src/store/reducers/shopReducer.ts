@@ -31,6 +31,10 @@ export interface ProductFilters {
   category: string[]
   trends: string[]
 }
+
+export interface ProductFiltersAPIResponse {
+  productFilters: ProductFilters
+}
 export interface Shop {
   shopProducts: ShopProducts
   bestSellerProducts: Product[]

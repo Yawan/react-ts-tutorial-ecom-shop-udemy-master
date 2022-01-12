@@ -2,7 +2,10 @@ import { call, put, takeLatest } from "redux-saga/effects"
 import ShopAPI from "../../api/ShopAPI"
 import { ShopActionType } from "../action-types"
 import { FetchShopProductsAction, ShopAction } from "../actions/ShopAction"
-import { ProductFilters, ShopProducts } from "../reducers/shopReducer"
+import {
+  ProductFiltersAPIResponse,
+  ShopProducts,
+} from "../reducers/shopReducer"
 
 function* workerFetchShopProductsSage(action: FetchShopProductsAction): any {
   const shopAPI = new ShopAPI()
@@ -48,7 +51,8 @@ function* workerFetchShopProductsAndFilterSage(
     const productResponse = yield call(shopAPI.getProduct, {})
     const productFilterResponse = yield call(shopAPI.getProductFilter)
     const shopProducts = productResponse.data as ShopProducts
-    const productFilters = productFilterResponse.data as ProductFilters
+    const { productFilters } =
+      productFilterResponse.data as ProductFiltersAPIResponse
 
     // console.log("saga", shopProducts)
     yield put<ShopAction>({
