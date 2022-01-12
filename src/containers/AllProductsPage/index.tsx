@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import AllProductsSideBar from "../../components/AllProductsSideBar"
 import ProductCard from "../../components/ProductCard"
 import { ShopActionType } from "../../store/action-types"
 import { RootState } from "../../store/reducers"
@@ -44,7 +45,10 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
     })
   }
   return (
-    <div className="all-products-page-container">{renderAllProducts()}</div>
+    <div className="all-products-page-container">
+      <AllProductsSideBar productFilters={productFilters}></AllProductsSideBar>
+      <div className="all-products-container">{renderAllProducts()}</div>
+    </div>
   )
 }
 
