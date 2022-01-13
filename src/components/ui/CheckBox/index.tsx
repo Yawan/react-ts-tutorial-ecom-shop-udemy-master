@@ -3,6 +3,7 @@ import "./style.scss"
 
 interface ICheckBoxProps {
   initialState?: boolean
+  onChange(value: boolean): void
 }
 
 const Checkbox: React.FunctionComponent<ICheckBoxProps> = (props) => {
@@ -11,7 +12,9 @@ const Checkbox: React.FunctionComponent<ICheckBoxProps> = (props) => {
   const iconClassName = isChecked ? "fa fa-check-square" : "fa fa-square-o"
 
   const handleCheckboxClick = () => {
-    setIsChecked(!isChecked)
+    const newValue = !isChecked
+    setIsChecked(newValue)
+    props.onChange(newValue)
   }
   return (
     <label className="checkbox-container" onClick={handleCheckboxClick}>
