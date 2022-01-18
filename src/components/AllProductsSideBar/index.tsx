@@ -1,4 +1,8 @@
-import * as React from "react"
+import React, { Dispatch, useCallback } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { UserActionType } from "../../store/action-types"
+import { UserAction } from "../../store/actions/UserAction"
+import { RootState } from "../../store/reducers"
 import { ProductFilters } from "../../store/reducers/shopReducer"
 import { capitalizeFirstLetter } from "../../utils/helper"
 import Checkbox from "../ui/CheckBox"
@@ -6,15 +10,25 @@ import "./style.scss"
 
 interface IAllProductsSideBarProps {
   productFilters: ProductFilters
-  userFilters: ProductFilters
-  setUserFilter: React.Dispatch<React.SetStateAction<ProductFilters>>
 }
 
 const AllProductsSideBar: React.FunctionComponent<IAllProductsSideBarProps> = ({
   productFilters,
-  userFilters,
-  setUserFilter,
 }) => {
+  const { filters: userFilters } = useSelector((state: RootState) => state.user)
+
+  const dispatch: Dispatch<UserAction> = useDispatch()
+
+  const updateUserFilters = useCallback(
+    (filters: ProductFilters) => {
+      dispatch({
+        type: UserActionType.UPDATE_USER_FILTERS,
+        filters,
+      })
+    },
+    [dispatch]
+  )
+
   const handleFilterChange =
     (filterKey: keyof ProductFilters, filterValue: string) =>
     (value: boolean) => {
@@ -27,7 +41,7 @@ const AllProductsSideBar: React.FunctionComponent<IAllProductsSideBarProps> = ({
           (x) => x !== filterValue
         )
       }
-      setUserFilter(newFilters)
+      updateUserFilters(newFilters)
     }
   const renderFilters = () => {
     return Object.keys(productFilters).map((filterKey) => {

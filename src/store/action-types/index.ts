@@ -14,4 +14,5 @@ export enum ShopActionType {
 
 export enum UserActionType {
   UPDATE_USER_SHOP_PRODUCTS_PAGE = "UPDATE_USER_SHOP_PRODUCTS_PAGE",
+  UPDATE_USER_FILTERS = "UPDATE_USER_FILTERS",
 }
