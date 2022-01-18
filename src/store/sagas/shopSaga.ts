@@ -1,11 +1,13 @@
-import { call, put, takeLatest } from "redux-saga/effects"
-import ShopAPI from "../../api/ShopAPI"
+import { call, put, select, takeLatest } from "redux-saga/effects"
+import ShopAPI, { GetProductOptions } from "../../api/ShopAPI"
 import { ShopActionType } from "../action-types"
 import { FetchShopProductsAction, ShopAction } from "../actions/ShopAction"
+import { RootState } from "../reducers"
 import {
   ProductFiltersAPIResponse,
   ShopProducts,
 } from "../reducers/shopReducer"
+import { User } from "../reducers/userReducer"
 
 function* workerFetchShopProductsSage(action: FetchShopProductsAction): any {
   const shopAPI = new ShopAPI()
@@ -42,19 +44,24 @@ function* workerFetchBestSellerSage(): any {
   }
 }
 
-function* workerFetchShopProductsAndFilterSage(
-  action: FetchShopProductsAction
-): any {
+// function* workerFetchShopProductsAndFilterSage(
+//   action: FetchShopProductsAction
+function* workerFetchShopProductsAndFilterSage(): any {
   const shopAPI = new ShopAPI()
 
+  const user: User = yield select((state: RootState) => state.user)
+  const options: GetProductOptions = {
+    page: user.shopProductsPage,
+    size: user.shopProductsSize,
+  }
+
   try {
-    const productResponse = yield call(shopAPI.getProduct, {})
+    const productResponse = yield call(shopAPI.getProduct, options)
     const productFilterResponse = yield call(shopAPI.getProductFilter)
     const shopProducts = productResponse.data as ShopProducts
     const { productFilters } =
       productFilterResponse.data as ProductFiltersAPIResponse
 
-    // console.log("saga", shopProducts)
     yield put<ShopAction>({
       type: ShopActionType.SET_SHOP_PRODUCTS_AND_FILTERS,
       shopProducts,

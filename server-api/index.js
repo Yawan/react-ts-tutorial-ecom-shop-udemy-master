@@ -51,11 +51,13 @@ app.get("/products", (req, res) => {
       if (category && !hasProductInCategory(category, product.category)) {
         return
       }
+      // count on product, size decides how many products are shown in this page.
       if (currentSize === sizeInt) {
         currentPage++
         currentSize = 0
       }
 
+      // when count to the pageInt(request params), push those products for response.
       if (currentPage === pageInt) {
         productsToReturn.push(product)
       } else if (currentPage > pageInt) {

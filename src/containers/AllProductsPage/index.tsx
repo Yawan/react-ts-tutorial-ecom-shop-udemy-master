@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import AllProductsSideBar from "../../components/AllProductsSideBar"
+import Pagination from "../../components/Pagination"
 import ProductCard from "../../components/ProductCard"
-import { ShopActionType } from "../../store/action-types"
+import { ShopActionType, UserActionType } from "../../store/action-types"
 import { RootState } from "../../store/reducers"
 import { Product, ProductFilters } from "../../store/reducers/shopReducer"
 import "./style.scss"
@@ -17,6 +18,7 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
   )
   const initialFilter: ProductFilters = { gender: [], category: [], trends: [] }
   const [userFilters, setUserFilters] = useState(initialFilter)
+  const [userSelectedPage, setUserSelectedPage] = useState(1)
 
   const dispatch = useDispatch()
 
@@ -25,6 +27,16 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
       type: ShopActionType.FETCH_SHOP_PRODUCTS_AND_FILTERS,
     })
   }, [dispatch])
+
+  const updateUserShopProductsPage = useCallback(
+    (shopProductsPage: number) => {
+      dispatch({
+        type: UserActionType.UPDATE_USER_SHOP_PRODUCTS_PAGE,
+        shopProductsPage,
+      })
+    },
+    [dispatch]
+  )
 
   useEffect(() => {
     if (!shopProducts.products.length) {
@@ -39,6 +51,12 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
   //   console.log("eff", !userFilters.trends)
   // }, [userFilters])
 
+  const handlePageChange = (selectedPage: number) => {
+    if (userSelectedPage !== selectedPage) {
+      setUserSelectedPage(selectedPage)
+      updateUserShopProductsPage(selectedPage)
+    }
+  }
   const isFilterEnabled = () => {
     if (
       !userFilters.category.length &&
@@ -82,6 +100,8 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
       })
   }
 
+  //todo: fix filter issue
+  console.log("all-products-page", shopProducts)
   return (
     <div className="all-products-page-container">
       <AllProductsSideBar
@@ -90,7 +110,14 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
         setUserFilter={setUserFilters}
       ></AllProductsSideBar>
       <div className="all-products-container">
-        {isFilterEnabled() ? renderFilteredProducts() : renderAllProducts()}
+        <div className="all-products">
+          {isFilterEnabled() ? renderFilteredProducts() : renderAllProducts()}
+        </div>
+        <Pagination
+          numberOfPages={shopProducts.totalPages}
+          onChange={handlePageChange}
+          overrideSelectedPage={userSelectedPage}
+        />
       </div>
     </div>
   )
