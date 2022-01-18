@@ -1,4 +1,4 @@
-import React, { Dispatch, useCallback, useEffect, useState } from "react"
+import React, { Dispatch, useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import AllProductsSideBar from "../../components/AllProductsSideBar"
 import Pagination from "../../components/Pagination"
@@ -7,7 +7,6 @@ import { ShopActionType, UserActionType } from "../../store/action-types"
 import { ShopAction } from "../../store/actions/ShopAction"
 import { UserAction } from "../../store/actions/UserAction"
 import { RootState } from "../../store/reducers"
-import { ProductFilters } from "../../store/reducers/shopReducer"
 import "./style.scss"
 
 interface IAllProductsPageProps {}
@@ -19,8 +18,6 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
     (state: RootState) => state.shop
   )
   const { shopProductsPage } = useSelector((state: RootState) => state.user)
-  const initialFilter: ProductFilters = { gender: [], category: [], trends: [] }
-  const [userFilters, setUserFilters] = useState(initialFilter)
 
   const dispatch: Dispatch<ShopAction | UserAction> = useDispatch()
 
@@ -39,25 +36,12 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
     },
     [dispatch]
   )
-  const updateUserFilters = useCallback(
-    (filters: ProductFilters) => {
-      dispatch({
-        type: UserActionType.UPDATE_USER_FILTERS,
-        filters,
-      })
-    },
-    [dispatch]
-  )
 
   useEffect(() => {
     if (!shopProducts.products.length) {
       fetchAllProducts()
     }
   }, [fetchAllProducts, shopProducts.products])
-
-  useEffect(() => {
-    updateUserFilters(userFilters)
-  }, [updateUserFilters, userFilters])
 
   const handlePageChange = (selectedPage: number) => {
     if (shopProductsPage !== selectedPage) {
@@ -77,11 +61,7 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
 
   return (
     <div className="all-products-page-container">
-      <AllProductsSideBar
-        productFilters={productFilters}
-        userFilters={userFilters}
-        setUserFilter={setUserFilters}
-      ></AllProductsSideBar>
+      <AllProductsSideBar productFilters={productFilters}></AllProductsSideBar>
       <div className="all-products-container">
         <div className="all-products">{renderAllProducts()}</div>
         <Pagination
