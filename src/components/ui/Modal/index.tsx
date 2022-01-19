@@ -5,6 +5,7 @@ import "./style.css"
 export interface IModalProps {
   show?: boolean
   modalBodyClassName?: string
+  onClickOutsideModal?(): void
 }
 
 export interface IModalState {}
@@ -24,12 +25,26 @@ export default class Modal extends React.Component<IModalProps, IModalState> {
     this.root.removeChild(this.el)
   }
 
+  removeOnClickPropagation = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    event.stopPropagation()
+  }
+
+  onClickOutsideModal = () => {
+    const { onClickOutsideModal } = this.props
+    onClickOutsideModal && onClickOutsideModal()
+  }
+
   render() {
     const { show, modalBodyClassName } = this.props
     return show
       ? ReactDOM.createPortal(
-          <div onClick={(e) => e.stopPropagation()} className="modal-container">
-            <div className="modal-overlay" />
+          <div
+            onClick={this.removeOnClickPropagation}
+            className="modal-container"
+          >
+            <div onClick={this.onClickOutsideModal} className="modal-overlay" />
             <div className={`modal-body ${modalBodyClassName || ""}`}>
               {this.props.children}
             </div>

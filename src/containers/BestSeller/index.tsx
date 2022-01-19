@@ -27,7 +27,7 @@ const BestSeller: React.FunctionComponent<IBestSellerProps> = (props) => {
       <h2>Best Seller</h2>
       <div className="best-seller-products">
         {bestSellerProducts.map((product) => (
-          <ProductCard url={product.variants[0].image} name={product.title} />
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </div>

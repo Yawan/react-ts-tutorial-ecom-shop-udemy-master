@@ -50,10 +50,10 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
   }
 
   const renderAllProducts = () => {
-    return shopProducts.products.map(({ id, title, variants }) => {
+    return shopProducts.products.map((product) => {
       return (
-        <div className="product-item-container" key={id}>
-          <ProductCard name={title} url={variants[0].image} />
+        <div className="product-item-container" key={product.id}>
+          <ProductCard product={product} />
         </div>
       )
     })

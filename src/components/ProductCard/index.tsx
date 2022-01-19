@@ -1,24 +1,38 @@
-import * as React from "react"
+import React, { useState } from "react"
+import { Product } from "../../store/reducers/shopReducer"
+import ProductCardModal from "../ProductCardModal"
 import "./style.scss"
 
 interface IProductCardProps {
-  url: string
-  name: string
+  product: Product
 }
 
 const ProductCard: React.FunctionComponent<IProductCardProps> = ({
-  url,
-  name,
+  product,
 }) => {
+  const [showDetail, setShowDetail] = useState(false)
+  const { title, variants } = product
+  const url = variants[0].image
+  const onClickProductCard = () => {
+    setShowDetail(true)
+  }
+  const onClickOutsideModal = () => {
+    setShowDetail(false)
+  }
   return (
-    <div className="product-card-container">
+    <div onClick={onClickProductCard} className="product-card-container">
       <div
         style={{ backgroundImage: `url(${url})` }}
         className="product-img"
       ></div>
       <div className="product-details">
-        <p>{name}</p>
+        <p>{title}</p>
       </div>
+      <ProductCardModal
+        show={showDetail}
+        product={product}
+        onClickOutsideModal={onClickOutsideModal}
+      />
     </div>
   )
 }
