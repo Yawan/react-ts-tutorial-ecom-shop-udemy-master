@@ -12,7 +12,7 @@ export interface IProductCardModalProps {
 }
 
 export interface IProductCardModalState {
-  selectedVariants: ProductVariantsCompleteDetails
+  selectedVariant: ProductVariantsCompleteDetails
 }
 
 export default class ProductCardModal extends React.Component<
@@ -25,12 +25,12 @@ export default class ProductCardModal extends React.Component<
   constructor(props: IProductCardModalProps) {
     super(props)
 
-    this.state = { selectedVariants: props.initialVariant }
+    this.state = { selectedVariant: props.initialVariant }
   }
   public render() {
     const { show, onClickOutsideModal } = this.props
-    const { selectedVariants } = this.state
-    const { image, title } = selectedVariants
+    const { selectedVariant } = this.state
+    const { image, title } = selectedVariant
 
     return (
       <Modal

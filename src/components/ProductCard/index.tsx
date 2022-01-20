@@ -31,7 +31,6 @@ const ProductCard: React.FunctionComponent<IProductCardProps> = ({
       </div>
       <ProductCardModal
         show={showDetail}
-        // product={product}
         initialVariant={initialVariant}
         variants={variants}
         onClickOutsideModal={onClickOutsideModal}
