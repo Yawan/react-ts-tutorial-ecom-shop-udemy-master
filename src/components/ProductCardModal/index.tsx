@@ -1,24 +1,37 @@
 import * as React from "react"
-import { Product } from "../../store/reducers/shopReducer"
+import { ProductVariantsCompleteDetails } from "../../store/reducers/shopReducer"
 import Modal from "../ui/Modal"
 import "./style.scss"
 
 export interface IProductCardModalProps {
   show: boolean
-  product: Product
+  // product: Product
+  initialVariant: ProductVariantsCompleteDetails
+  variants: ProductVariantsCompleteDetails[]
   onClickOutsideModal(): void
 }
 
-export interface IProductCardModalState {}
+export interface IProductCardModalState {
+  selectedVariants: ProductVariantsCompleteDetails
+}
 
 export default class ProductCardModal extends React.Component<
   IProductCardModalProps,
   IProductCardModalState
 > {
+  /**
+   *
+   */
+  constructor(props: IProductCardModalProps) {
+    super(props)
+
+    this.state = { selectedVariants: props.initialVariant }
+  }
   public render() {
-    const { show, product, onClickOutsideModal } = this.props
-    const { title, variants } = product
-    const imageUrl = variants[0].image
+    const { show, onClickOutsideModal } = this.props
+    const { selectedVariants } = this.state
+    const { image, title } = selectedVariants
+
     return (
       <Modal
         modalBodyClassName="product-card-modal-body"
@@ -27,7 +40,7 @@ export default class ProductCardModal extends React.Component<
       >
         <div className="modal-product-details-container">
           <div className="modal-product-image">
-            <img src={imageUrl} alt={`product: ${title}`} />
+            <img src={image} alt={`product: ${title}`} />
           </div>
           <div className="modal-product-details">
             <p className="modal-product-name">{title}</p>
