@@ -8,6 +8,7 @@ export interface IButtonProps {
   selected?: boolean
   type?: ButtonType
   onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void
+  style?: React.CSSProperties
 }
 
 const Button: React.FunctionComponent<IButtonProps> = ({
@@ -16,10 +17,12 @@ const Button: React.FunctionComponent<IButtonProps> = ({
   selected,
   onClick,
   className,
+  style,
 }) => {
   const selectedClass = selected ? "selected" : ""
   return (
     <button
+      style={style}
       onClick={onClick}
       className={`btn btn-${type} ${selectedClass} ${className || ""}`}
     >

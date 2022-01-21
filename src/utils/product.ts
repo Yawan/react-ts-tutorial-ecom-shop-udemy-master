@@ -36,3 +36,15 @@ export const getProductVariantDetails = (
     variants,
   }
 }
+
+export const getDiscountedPrice = (price: string, discount: string) => {
+  const currentPrice = parseFloat(price.replace("$", ""))
+  let discountedPrice: number
+
+  if (discount.includes("$")) {
+    discountedPrice = currentPrice - parseFloat(discount.replace("$", ""))
+  } else {
+    discountedPrice = currentPrice - currentPrice * (parseFloat(discount) / 100)
+  }
+  return discountedPrice
+}
