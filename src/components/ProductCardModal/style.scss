@@ -8,6 +8,7 @@
 
     .modal-product-image-container {
         box-sizing: border-box;
+        padding: 10px;
     }
 
     .modal-product-image {
@@ -16,6 +17,11 @@
         background-repeat: no-repeat;
         background-size: contain;
         background-position: center;
+    }
+
+    .modal-product-details {
+        margin-left: 20px;
+        font-size: 20px;
     }
 
     .modal-product-name {
@@ -60,6 +66,17 @@
         margin-right: 18px;
     }
 
+    .old-price {
+        margin-right: 20px;
+        color: lightgray;
+    }
+
+    .price-ui {
+        margin-top: 5px;
+        font-family: cursive;
+        margin-bottom: 10px;
+    }
+
     .add-to-cart-button {
         width: 100%;
         margin-top: 50px;
@@ -71,6 +88,11 @@
         margin-bottom: 35px;
         color: #464646;
         font-weight: 100;
+    }
+
+    .quantity-container-label {
+        display: flex;
+        align-items: center;
     }
 
     .qty-value {

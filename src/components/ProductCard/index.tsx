@@ -12,7 +12,8 @@ const ProductCard: React.FunctionComponent<IProductCardProps> = ({
   product,
 }) => {
   const [showDetail, setShowDetail] = useState(false)
-  const { initialVariant, variants } = getProductVariantDetails(product)
+  const { initialVariant, variants, variantsAvailableOptions } =
+    getProductVariantDetails(product)
   const url = variants[0].image
   const onClickProductCard = () => {
     setShowDetail(true)
@@ -33,6 +34,7 @@ const ProductCard: React.FunctionComponent<IProductCardProps> = ({
         show={showDetail}
         initialVariant={initialVariant}
         variants={variants}
+        variantsAvailableOptions={variantsAvailableOptions}
         onClickOutsideModal={onClickOutsideModal}
       />
     </div>

@@ -10,6 +10,13 @@
     &:active {
         transform: scale(.95);
     }
+
+    .disabled {
+        background-color: #EBEBE4;
+        color: #C6C6C6;
+        cursor: not-allowed;
+        transform: scale(1)
+    }
 }
 
 .btn-primary {
