@@ -11,7 +11,7 @@
         transform: scale(.95);
     }
 
-    .disabled {
+    &.disabled {
         background-color: #EBEBE4;
         color: #C6C6C6;
         cursor: not-allowed;

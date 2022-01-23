@@ -30,6 +30,7 @@ const Button: React.FunctionComponent<IButtonProps> = ({
       className={`btn btn-${type} ${selectedClass} ${disabledClass} ${
         className || ""
       }`}
+      disabled={disabled}
     >
       {children}
     </button>
