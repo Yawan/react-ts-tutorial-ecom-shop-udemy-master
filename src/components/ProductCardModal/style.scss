@@ -1,0 +1,107 @@
+.product-card-modal-body {
+    background-color: white;
+    width: 600;
+
+    .modal-product-details-container {
+        display: flex;
+    }
+
+    .modal-product-image-container {
+        box-sizing: border-box;
+        padding: 10px;
+    }
+
+    .modal-product-image {
+        min-height: 235px;
+        width: 160px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+    }
+
+    .modal-product-details {
+        margin-left: 20px;
+        font-size: 20px;
+    }
+
+    .modal-product-name {
+        font-size: 30px;
+        margin-bottom: 10px;
+        margin-top: 0px;
+    }
+
+    .variant-container {
+        font-size: 16px;
+    }
+
+    .variant-option-header {
+        margin-bottom: 10px;
+    }
+
+    .variant-option {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .variant-option-button {
+        padding-left: 20px;
+        padding-right: 20px;
+        box-sizing: border-box;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        height: 30px;
+    }
+
+    .variant-option-button.size {
+        min-width: 50px;
+    }
+
+    .variant-option-button.color {
+        min-width: 80px;
+    }
+
+    .variant-option-button.color.selected {
+        min-width: 80px;
+        transform: scale(1.20);
+        margin-right: 18px;
+    }
+
+    .old-price {
+        margin-right: 20px;
+        color: lightgray;
+    }
+
+    .price-ui {
+        margin-top: 5px;
+        font-family: cursive;
+        margin-bottom: 10px;
+    }
+
+    .add-to-cart-button {
+        width: 100%;
+        margin-top: 50px;
+        font-size: 20px;
+    }
+
+    .quantity-container {
+        font-size: 12px;
+        margin-bottom: 35px;
+        color: #464646;
+        font-weight: 100;
+    }
+
+    .quantity-container-label {
+        display: flex;
+        align-items: center;
+    }
+
+    .qty-value {
+        margin-left: 25px;
+        margin-right: 25px;
+        font-size: 16px;
+    }
+
+    .qty-button {
+        cursor: pointer;
+    }
+}

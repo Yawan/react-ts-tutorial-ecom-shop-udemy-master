@@ -1,26 +1,44 @@
-import * as React from "react"
+import React, { useState } from "react"
+import { Product } from "../../store/reducers/shopReducer"
+import { getProductVariantDetails } from "../../utils/product"
+import ProductCardModal from "../ProductCardModal"
 import "./style.scss"
 
 interface IProductCardProps {
-  url: string
-  name: string
+  product: Product
 }
 
 const ProductCard: React.FunctionComponent<IProductCardProps> = ({
-  url,
-  name,
+  product,
 }) => {
-  return (
-    <div className="product-card-container">
+  const [showDetail, setShowDetail] = useState(false)
+  const { initialVariant, variants, variantsAvailableOptions } =
+    getProductVariantDetails(product)
+  const url = variants[0].image
+  const onClickProductCard = () => {
+    setShowDetail(true)
+  }
+  const onClickOutsideModal = () => {
+    setShowDetail(false)
+  }
+  return initialVariant ? (
+    <div onClick={onClickProductCard} className="product-card-container">
       <div
         style={{ backgroundImage: `url(${url})` }}
         className="product-img"
       ></div>
       <div className="product-details">
-        <p>{name}</p>
+        <p>{initialVariant.title}</p>
       </div>
+      <ProductCardModal
+        show={showDetail}
+        initialVariant={initialVariant}
+        variants={variants}
+        variantsAvailableOptions={variantsAvailableOptions}
+        onClickOutsideModal={onClickOutsideModal}
+      />
     </div>
-  )
+  ) : null
 }
 
 export default ProductCard
