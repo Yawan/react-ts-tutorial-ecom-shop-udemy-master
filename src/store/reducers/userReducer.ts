@@ -1,12 +1,17 @@
 import { Reducer } from "redux"
 import { UserActionType } from "../action-types"
 import { UserAction } from "../actions/UserAction"
-import { ProductFilters } from "./shopReducer"
+import { ProductFilters, ProductVariantsCompleteDetails } from "./shopReducer"
+
+export interface ProductPurchase extends ProductVariantsCompleteDetails {
+  quantity: number
+}
 
 export interface User {
   filters: ProductFilters
   shopProductsPage: number
   shopProductsSize: number
+  cart: ProductPurchase[]
 }
 
 const userInitialState: User = {
@@ -17,6 +22,7 @@ const userInitialState: User = {
   },
   shopProductsPage: 1,
   shopProductsSize: 2,
+  cart: [],
 }
 
 export const userReducer: Reducer<User, UserAction> = (
@@ -28,6 +34,9 @@ export const userReducer: Reducer<User, UserAction> = (
       return { ...state, shopProductsPage: action.shopProductsPage }
     case UserActionType.UPDATE_USER_FILTERS:
       return { ...state, filters: action.filters }
+    case UserActionType.ADD_TO_CART:
+      let cart = [...state.cart, action.productPurchase]
+      return { ...state, cart }
     default:
       return state
   }

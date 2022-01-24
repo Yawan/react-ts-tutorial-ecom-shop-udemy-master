@@ -1,5 +1,9 @@
-import * as React from "react"
+import React, { Dispatch, useCallback, useState } from "react"
+import { useDispatch } from "react-redux"
+import { UserActionType } from "../../store/action-types"
+import { UserAction } from "../../store/actions/UserAction"
 import { ProductVariantsCompleteDetails } from "../../store/reducers/shopReducer"
+import { ProductPurchase } from "../../store/reducers/userReducer"
 import { VariantsAvailableOptions } from "../../utils/product"
 import Button from "../ui/Button"
 import Modal from "../ui/Modal"
@@ -21,97 +25,99 @@ export interface IProductCardModalState {
   selectedVariant: ProductVariantsCompleteDetails
   quantity: number
 }
+const ProductCardModal: React.FunctionComponent<IProductCardModalProps> = ({
+  show,
+  variants,
+  onClickOutsideModal,
+  variantsAvailableOptions,
+  initialVariant,
+}) => {
+  const [selectedVariant, setSelectedVariant] = useState(initialVariant)
+  const [quantity, setQuantity] = useState(1)
+  const dispatch: Dispatch<UserAction> = useDispatch()
 
-export default class ProductCardModal extends React.Component<
-  IProductCardModalProps,
-  IProductCardModalState
-> {
-  constructor(props: IProductCardModalProps) {
-    super(props)
-
-    this.state = { selectedVariant: props.initialVariant, quantity: 1 }
-  }
-
-  handleClickPlus = () => {
-    const { quantity, selectedVariant } = this.state
-    selectedVariant.stock > quantity &&
-      this.setState({ quantity: quantity + 1 })
-  }
-  handleClickMinus = () => {
-    const { quantity } = this.state
-    quantity > 1 && this.setState({ quantity: quantity - 1 })
-  }
-  handleSizeChange = (size: string) => {
-    const { selectedVariant } = this.state
-    const { variants } = this.props
-
-    if (selectedVariant.size !== size) {
-      this.setState({
-        selectedVariant: variants.filter(
-          (variant) => variant.size === size && variant.stock > 0
-        )[0],
+  const addToCart = useCallback(
+    (productPurchase: ProductPurchase) => {
+      dispatch({
+        type: UserActionType.ADD_TO_CART,
+        productPurchase,
       })
+    },
+    [dispatch]
+  )
+
+  const handleAddToCart = () => {
+    addToCart({ ...selectedVariant, quantity })
+  }
+
+  const handleClickPlus = () => {
+    selectedVariant.stock > quantity && setQuantity((quantity) => quantity + 1)
+  }
+  const handleClickMinus = () => {
+    quantity > 1 && setQuantity((quantity) => quantity - 1)
+  }
+  const handleSizeChange = (size: string) => {
+    if (selectedVariant.size !== size) {
+      setSelectedVariant(
+        variants.filter(
+          (variant) => variant.size === size && variant.stock > 0
+        )[0]
+      )
     }
   }
-  handleColorChange = (color: string) => {
-    const { selectedVariant } = this.state
-    const { variants } = this.props
-
+  const handleColorChange = (color: string) => {
     if (selectedVariant.color !== color) {
-      this.setState({
-        selectedVariant: variants.filter(
+      setSelectedVariant(
+        variants.filter(
           (variant) =>
             variant.size === selectedVariant.size &&
             variant.color === color &&
             variant.stock > 0
-        )[0],
-      })
+        )[0]
+      )
     }
   }
-  render() {
-    const { show, variants, onClickOutsideModal, variantsAvailableOptions } =
-      this.props
-    const { selectedVariant, quantity } = this.state
-    const { image, title } = selectedVariant
 
-    return (
-      <Modal
-        modalBodyClassName="product-card-modal-body"
-        show={show}
-        onClickOutsideModal={onClickOutsideModal}
-      >
-        <div className="modal-product-details-container">
-          <div className="modal-product-image-container">
-            <div
-              className="modal-product-image"
-              style={{ backgroundImage: `url(${image})` }}
-            />
-          </div>
-          <div className="modal-product-details">
-            <p className="modal-product-name">{title}</p>
-            <Price selectedVariant={selectedVariant} />
-            <Quantity
-              quantity={quantity}
-              onClickMinus={this.handleClickMinus}
-              onClickPlus={this.handleClickPlus}
-            />
-            <VariantOptions
-              variants={variants}
-              selectedVariant={selectedVariant}
-              variantsAvailableOptions={variantsAvailableOptions}
-              onSizeChanged={this.handleSizeChange}
-              onColorChanged={this.handleColorChange}
-            />
-            <Button
-              className="add-to-cart-button"
-              type="primary"
-              onClick={() => {}}
-            >
-              Add to Cart
-            </Button>
-          </div>
+  const { image, title } = selectedVariant
+  return (
+    <Modal
+      modalBodyClassName="product-card-modal-body"
+      show={show}
+      onClickOutsideModal={onClickOutsideModal}
+    >
+      <div className="modal-product-details-container">
+        <div className="modal-product-image-container">
+          <div
+            className="modal-product-image"
+            style={{ backgroundImage: `url(${image})` }}
+          />
         </div>
-      </Modal>
-    )
-  }
+        <div className="modal-product-details">
+          <p className="modal-product-name">{title}</p>
+          <Price selectedVariant={selectedVariant} />
+          <Quantity
+            quantity={quantity}
+            onClickMinus={handleClickMinus}
+            onClickPlus={handleClickPlus}
+          />
+          <VariantOptions
+            variants={variants}
+            selectedVariant={selectedVariant}
+            variantsAvailableOptions={variantsAvailableOptions}
+            onSizeChanged={handleSizeChange}
+            onColorChanged={handleColorChange}
+          />
+          <Button
+            className="add-to-cart-button"
+            type="primary"
+            onClick={handleAddToCart}
+          >
+            Add to Cart
+          </Button>
+        </div>
+      </div>
+    </Modal>
+  )
 }
+
+export default ProductCardModal
