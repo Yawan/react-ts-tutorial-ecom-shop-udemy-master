@@ -37,6 +37,13 @@ export const userReducer: Reducer<User, UserAction> = (
     case UserActionType.ADD_TO_CART:
       let cart = [...state.cart, action.productPurchase]
       return { ...state, cart }
+    case UserActionType.REMOVE_FROM_CART:
+      const { productId, variantId } = action.productPurchase
+      const newCart = state.cart.filter((x) => {
+        return x.productId !== productId || x.variantId !== variantId
+      })
+
+      return { ...state, cart: newCart }
     default:
       return state
   }
