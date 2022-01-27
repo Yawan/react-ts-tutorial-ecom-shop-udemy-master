@@ -1,0 +1,81 @@
+.checkout-page-container {
+    display: flex;
+    width: 100%;
+    padding: 20px;
+
+    .cart-items-container {
+        width: 50%;
+    }
+
+    // #region header
+    .cart-items-header {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        border: 1px solid #c8c8c8;
+        border-radius: 10px;
+        padding: 10px 20px;
+
+        font-weight: 700;
+        font-size: 20px;
+    }
+
+    .shipping-container {
+        display: flex;
+        align-items: center;
+        font-size: 20px;
+        color: green;
+
+        .fa-truck {
+            font-size: 40px;
+        }
+
+        label {
+            margin-left: 15px;
+        }
+    }
+
+    // #endregion
+
+    // #region content
+    .cart-items {
+        width: 100%;
+        border: 1px solid #c8c8c8;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .divider {
+        width: 100%;
+        border: 1px solid #c8c8c8;
+        margin: 30px 0px;
+    }
+
+    // #endregion
+
+    // #region footer
+    .cart-items-footer {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        border: 1px solid #c8c8c8;
+        border-radius: 10px;
+        padding: 10px 20px;
+        margin-top: 20px;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .total-price {
+        color: #e66b00;
+    }
+
+    // #endregion
+
+    // #region customer
+    .customer-info {
+        width: 50%;
+    }
+
+    // #endregion
+}

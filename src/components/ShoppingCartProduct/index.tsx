@@ -1,7 +1,7 @@
 import * as React from "react"
 import { ProductPurchase } from "../../store/reducers/userReducer"
 import { capitalizeFirstLetter } from "../../utils/helper"
-import { getDiscountedPrice, parsePrice } from "../../utils/product"
+import { getSubtotalPrice } from "../../utils/product"
 import "./style.scss"
 interface IShoppingCartProductProps {
   product: ProductPurchase
@@ -11,12 +11,9 @@ interface IShoppingCartProductProps {
 const ShoppingCartProduct: React.FunctionComponent<
   IShoppingCartProductProps
 > = ({ product, removeFromCart }) => {
-  const { title, image, size, color, quantity, discount, price } = product
-  const currentPrice = discount
-    ? getDiscountedPrice(price, discount)
-    : parsePrice(price)
+  const { title, image, size, color, quantity } = product
 
-  const subtotalPrice = currentPrice * quantity
+  const subtotalPrice = getSubtotalPrice(product)
 
   const handleOnClickCloseButton = () => {
     removeFromCart(product)
