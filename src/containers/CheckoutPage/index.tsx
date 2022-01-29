@@ -2,6 +2,7 @@ import React from "react"
 import { useSelector } from "react-redux"
 import { Navigate } from "react-router-dom"
 import CheckoutPageProduct from "../../components/CheckoutPageProduct"
+import CustomerInfo from "../../components/CustomerInfo"
 import { ROUTE } from "../../constants/route"
 import { RootState } from "../../store/reducers"
 import { getSubtotalPrice } from "../../utils/product"
@@ -52,7 +53,7 @@ const CheckoutPage: React.FunctionComponent<ICheckoutPageProps> = (props) => {
           <div className="total-price">${totalPrice}</div>
         </div>
       </div>
-      <div className="customer-info"></div>
+      <CustomerInfo />
     </div>
   ) : (
     // v6 modification, replace <Redirect /> in router v5 to <Navigation />.

@@ -1,0 +1,29 @@
+.input-container {
+    .label {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    input {
+        border: 1px solid #d9d9d9;
+        padding: 4px 12px;
+        font-size: 18px;
+        outline: none;
+        border-radius: 5px;
+    }
+
+    input.positive-ui {
+        border: 1px solid #4db6ac;
+    }
+
+    input.error-ui {
+        border: 1px solid #d93900;
+    }
+
+    .error-message {
+        margin-top: 10px;
+        font-size: 12px;
+        font-style: italic;
+        color: #d93900;
+    }
+}
