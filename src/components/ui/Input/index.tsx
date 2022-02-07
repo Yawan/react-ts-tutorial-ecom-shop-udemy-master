@@ -1,5 +1,5 @@
 import * as React from "react"
-
+import "./style.scss"
 interface IInputProps {
   onChange(event: React.ChangeEvent<HTMLInputElement>): void
   error?: string
@@ -7,6 +7,7 @@ interface IInputProps {
   inputStyle?: React.CSSProperties
   inputContainerStyle?: React.CSSProperties
   label: string
+  inputRef?: React.RefObject<HTMLInputElement>
 }
 
 const Input: React.FunctionComponent<IInputProps> = ({
@@ -16,6 +17,7 @@ const Input: React.FunctionComponent<IInputProps> = ({
   inputStyle,
   inputContainerStyle,
   label,
+  inputRef,
 }) => {
   const overrideClassName =
     (error && "error-ui") || (positive && "positive-ui") || ""
@@ -23,6 +25,7 @@ const Input: React.FunctionComponent<IInputProps> = ({
     <div className="input-container" style={inputContainerStyle}>
       <div className="label">{label}</div>
       <input
+        ref={inputRef}
         className={overrideClassName}
         style={inputStyle}
         onChange={onChange}

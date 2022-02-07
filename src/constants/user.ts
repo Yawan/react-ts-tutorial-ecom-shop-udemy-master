@@ -17,4 +17,14 @@ export const CUSTOMER_INFO_FIELD_LIST: CustomerInfoFieldList = {
   mobileNo: "Mobile #",
 }
 
+export const CUSTOMER_INFO_FIELD_LIST_INITIAL_STATE: CustomerInfoFieldList = {
+  completeName: "",
+  address: "",
+  city: "",
+  stateOrProvince: "",
+  mobileNo: "",
+}
+
 export const CUSTOMER_INFO_FIELD_WIDTH = "Calc(100% - 20px)"
+
+export const CUSTOMER_INFO_FIELD_ERROR = "Please complete this field."
