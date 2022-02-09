@@ -18,9 +18,13 @@ export interface RemoveFromCartAction {
   type: UserActionType.REMOVE_FROM_CART
   productPurchase: ProductPurchase
 }
+export interface CleanCartAction {
+  type: UserActionType.CLEAN_CART
+}
 
 export type UserAction =
   | UpdateUserShopProductsPageAction
   | UpdateUserFiltersAction
   | AddToCartAction
   | RemoveFromCartAction
+  | CleanCartAction

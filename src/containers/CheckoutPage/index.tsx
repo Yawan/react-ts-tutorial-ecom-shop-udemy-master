@@ -53,7 +53,7 @@ const CheckoutPage: React.FunctionComponent<ICheckoutPageProps> = (props) => {
           <div className="total-price">${totalPrice}</div>
         </div>
       </div>
-      <CustomerInfo />
+      <CustomerInfo cart={cart} />
     </div>
   ) : (
     // v6 modification, replace <Redirect /> in router v5 to <Navigation />.

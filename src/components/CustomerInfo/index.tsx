@@ -1,5 +1,9 @@
 import update from "immutability-helper"
-import React, { useMemo, useRef, useState } from "react"
+import React, { Dispatch, useMemo, useRef, useState } from "react"
+import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import ShopAPI from "../../api/ShopAPI"
+import { ROUTE } from "../../constants/route"
 import {
   CustomerInfoField,
   CustomerInfoFieldList,
@@ -8,17 +12,25 @@ import {
   CUSTOMER_INFO_FIELD_LIST_INITIAL_STATE,
   CUSTOMER_INFO_FIELD_WIDTH,
 } from "../../constants/user"
+import { UserActionType } from "../../store/action-types"
+import { UserAction } from "../../store/actions/UserAction"
+import { ProductPurchase } from "../../store/reducers/userReducer"
 import Button from "../ui/Button"
 import Input from "../ui/Input"
+import Modal from "../ui/Modal"
 import "./style.scss"
 
-interface ICustomerInfoProps {}
+interface ICustomerInfoProps {
+  cart: ProductPurchase[]
+}
 
 export type CustomerInfoFieldRefs = {
   [field in CustomerInfoField]: React.RefObject<HTMLInputElement>
 }
 
-const CustomerInfo: React.FunctionComponent<ICustomerInfoProps> = (props) => {
+const CustomerInfo: React.FunctionComponent<ICustomerInfoProps> = ({
+  cart,
+}) => {
   const fieldList = useMemo(() => Object.keys(CUSTOMER_INFO_FIELD_LIST), [])
   const initialFieldRefs = useMemo(() => {
     const refs = {} as CustomerInfoFieldRefs
@@ -37,7 +49,8 @@ const CustomerInfo: React.FunctionComponent<ICustomerInfoProps> = (props) => {
     ...CUSTOMER_INFO_FIELD_LIST_INITIAL_STATE,
   })
   const [isCompletePurchaseClick, setIsCompletePurchaseClick] =
-    useState<Boolean>(false)
+    useState<boolean>(false)
+  const [showThankYouModal, setShowThankYouModal] = useState(false)
 
   const validateInputFields = (field: CustomerInfoField, value: string) => {
     const errorMessage = value ? "" : CUSTOMER_INFO_FIELD_ERROR
@@ -100,9 +113,28 @@ const CustomerInfo: React.FunctionComponent<ICustomerInfoProps> = (props) => {
   const handleButtonClick = () => {
     setIsCompletePurchaseClick(true)
     if (allFieldsAllValid()) {
-      // todo: show modal
-      console.log("todo modal")
+      const shopAPI = new ShopAPI()
+
+      shopAPI
+        .postOrder({
+          cart,
+          user: fieldState,
+        })
+        .then(() => {
+          // show modal after post Order.
+          setShowThankYouModal(true)
+        })
     }
+  }
+
+  const dispatch: Dispatch<UserAction> = useDispatch()
+  let navigate = useNavigate()
+
+  // handle modal's button
+  const handleShopMoreClick = () => {
+    dispatch({ type: UserActionType.CLEAN_CART })
+
+    navigate(ROUTE.ALL_PRODUCTS)
   }
 
   return (
@@ -117,6 +149,16 @@ const CustomerInfo: React.FunctionComponent<ICustomerInfoProps> = (props) => {
       >
         Complete Purchase
       </Button>
+      <Modal
+        modalBodyClassName="customer-info-modal-body"
+        show={showThankYouModal}
+      >
+        <div className="header">Thank you! We have received your order!</div>
+        <p>Please wait 5 to 10 business days for your items to arrive.</p>
+        <Button type="primary" onClick={handleShopMoreClick}>
+          Buy more!
+        </Button>
+      </Modal>
     </div>
   )
 }
