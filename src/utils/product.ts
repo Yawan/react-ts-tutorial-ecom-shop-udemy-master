@@ -1,4 +1,5 @@
 import { ProductVariantsCompleteDetails } from "../store/reducers/shopReducer"
+import { ProductPurchase } from "../store/reducers/userReducer"
 import { Product } from "./../store/reducers/shopReducer"
 import { omit } from "./helper"
 
@@ -69,4 +70,25 @@ export const getDiscountedPrice = (price: string, discount: string) => {
     discountedPrice = currentPrice - currentPrice * (parseFloat(discount) / 100)
   }
   return discountedPrice
+}
+
+// todo: check with jest coding work.
+export const getSubtotalPrice = (product: ProductPurchase) => {
+  const { discount, price, quantity } = product
+  const currentPrice = discount
+    ? getDiscountedPrice(price, discount)
+    : parsePrice(price)
+
+  return currentPrice * quantity
+}
+
+export const getBackgroundColorStyleForButton = (
+  color: string
+): React.CSSProperties => {
+  const arrayColors = color.split("&")
+  return arrayColors.length > 1
+    ? {
+        backgroundImage: `linear-gradient(${arrayColors.join(",")})`,
+      }
+    : { backgroundColor: color }
 }

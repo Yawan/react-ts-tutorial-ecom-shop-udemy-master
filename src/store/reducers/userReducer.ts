@@ -44,6 +44,8 @@ export const userReducer: Reducer<User, UserAction> = (
       })
 
       return { ...state, cart: newCart }
+    case UserActionType.CLEAN_CART:
+      return { ...state, cart: [] }
     default:
       return state
   }

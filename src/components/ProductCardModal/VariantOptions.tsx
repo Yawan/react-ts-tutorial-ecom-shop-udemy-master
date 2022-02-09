@@ -1,6 +1,9 @@
 import * as React from "react"
 import { ProductVariantsCompleteDetails } from "../../store/reducers/shopReducer"
-import { VariantsAvailableOptions } from "../../utils/product"
+import {
+  getBackgroundColorStyleForButton,
+  VariantsAvailableOptions,
+} from "../../utils/product"
 import Button from "../ui/Button"
 
 interface IVariantOptionsProps {
@@ -60,13 +63,9 @@ const VariantOptions: React.FunctionComponent<IVariantOptionsProps> = ({
   })
 
   variantsAvailableOptions[selectedVariant.size].forEach((color) => {
-    const arrayColors = color.split("&")
     const backgroundStyle: React.CSSProperties =
-      arrayColors.length > 1
-        ? {
-            backgroundImage: `linear-gradient(${arrayColors.join(",")})`,
-          }
-        : { backgroundColor: color }
+      getBackgroundColorStyleForButton(color)
+
     colorsUI.push(
       <Button
         style={backgroundStyle}
