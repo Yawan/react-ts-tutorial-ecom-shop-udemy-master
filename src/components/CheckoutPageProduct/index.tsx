@@ -28,7 +28,7 @@ const CheckoutPageProduct: React.FunctionComponent<
         />
       </div>
       <div className="product-details">
-        <div className="product-name">{title}</div>
+        <p className="product-name">{title}</p>
         <p>{SIZE[size]}</p>
         <div
           className="color"

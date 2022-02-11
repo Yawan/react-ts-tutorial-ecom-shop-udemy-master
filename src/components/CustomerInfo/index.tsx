@@ -139,7 +139,7 @@ const CustomerInfo: React.FunctionComponent<ICustomerInfoProps> = ({
 
   return (
     <div className="customer-info-container">
-      <div className="heading">Billing Information</div>
+      <div className="heading text">Billing Information</div>
       {renderInputs()}
       <Button
         type="primary"

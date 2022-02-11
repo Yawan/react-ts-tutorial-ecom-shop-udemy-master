@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { ThemeContext } from "../../context/ThemeContext"
 import { Product } from "../../store/reducers/shopReducer"
 import { getProductVariantDetails } from "../../utils/product"
 import ProductCardModal from "../ProductCardModal"
@@ -21,24 +22,33 @@ const ProductCard: React.FunctionComponent<IProductCardProps> = ({
   const onClickOutsideModal = () => {
     setShowDetail(false)
   }
-  return initialVariant ? (
-    <div onClick={onClickProductCard} className="product-card-container">
-      <div
-        style={{ backgroundImage: `url(${url})` }}
-        className="product-img"
-      ></div>
-      <div className="product-details">
-        <p>{initialVariant.title}</p>
-      </div>
-      <ProductCardModal
-        show={showDetail}
-        initialVariant={initialVariant}
-        variants={variants}
-        variantsAvailableOptions={variantsAvailableOptions}
-        onClickOutsideModal={onClickOutsideModal}
-      />
-    </div>
-  ) : null
+  return (
+    <ThemeContext.Consumer>
+      {(theme) =>
+        initialVariant ? (
+          <div
+            onClick={onClickProductCard}
+            className={`product-card-container ${theme}`}
+          >
+            <div
+              style={{ backgroundImage: `url(${url})` }}
+              className="product-img"
+            ></div>
+            <div className="product-details">
+              <p>{initialVariant.title}</p>
+            </div>
+            <ProductCardModal
+              show={showDetail}
+              initialVariant={initialVariant}
+              variants={variants}
+              variantsAvailableOptions={variantsAvailableOptions}
+              onClickOutsideModal={onClickOutsideModal}
+            />
+          </div>
+        ) : null
+      }
+    </ThemeContext.Consumer>
+  )
 }
 
 export default ProductCard
