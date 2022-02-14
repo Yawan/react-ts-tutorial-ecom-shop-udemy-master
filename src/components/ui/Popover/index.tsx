@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
 import ReactDOM from "react-dom"
 import "./style.css"
 
@@ -29,86 +29,75 @@ export interface IPopoverState {
   childrenPosition: PopoverChildrenPosition
   contentWidth: number
 }
+const Popover: React.FunctionComponent<IPopoverProps> = ({
+  children,
+  controlShow,
+  onClick,
+  content,
+  position,
+  popoverBodyClassName,
+}) => {
+  const root = useRef(document.querySelector("#root") as HTMLDivElement)
+  const el = useRef(document.createElement("div"))
 
-export default class Popover extends React.Component<
-  IPopoverProps,
-  IPopoverState
-> {
-  root: HTMLDivElement
-  el: HTMLDivElement
-  childrenRef: React.RefObject<HTMLElement>
-  popperRef: React.RefObject<HTMLDivElement>
-  constructor(props: IPopoverProps) {
-    super(props)
-    this.root = document.querySelector("#root") as HTMLDivElement
-    this.el = document.createElement("div")
-    this.childrenRef = React.createRef()
-    this.popperRef = React.createRef()
+  const childrenRef = useRef<HTMLElement>(null)
+  const popperRef = useRef<HTMLDivElement>(null)
 
-    this.state = {
-      show: false,
-      childrenPosition: {
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-      },
-      contentWidth: 0,
-    }
-  }
+  const [show, setShow] = useState(false)
+  const [childrenPosition, setChildrenPosition] =
+    useState<PopoverChildrenPosition>({
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+    })
+  const [contentWidth, setContentWidth] = useState(0)
 
-  componentDidMount() {
-    this.root.appendChild(this.el)
+  useEffect(() => {
+    root.current.appendChild(el.current)
+
     setTimeout(() => {
-      const childrenElement = this.childrenRef.current
+      const childrenElement = childrenRef.current
       if (childrenElement) {
         const { top, left, bottom, right } =
           childrenElement.getBoundingClientRect()
-        this.setState({ childrenPosition: { top, left, bottom, right } })
+        setChildrenPosition({ top, left, bottom, right })
       }
     }, 500)
-  }
-  componentWillUnmount() {
-    this.root.removeChild(this.el)
-  }
 
-  getShowValue = () => {
-    const { controlShow } = this.props
-    const { show } = this.state
+    return function cleanup() {
+      root.current.removeChild(el.current)
+    }
+  })
+
+  // access [contentWidth] when updated.
+  useLayoutEffect(() => {
+    const popperWidth = popperRef.current
+      ? popperRef.current.getBoundingClientRect().width
+      : 0
+
+    if ((!contentWidth || popperWidth !== contentWidth) && getShowValue()) {
+      setContentWidth(popperWidth)
+    }
+  })
+
+  const getShowValue = () => {
     return controlShow === undefined ? show : controlShow
   }
 
-  handleContentClick = () => {
-    const { controlShow, onClick } = this.props
-    controlShow === undefined && this.setState({ show: !this.state.show })
+  const handleContentClick = () => {
+    controlShow === undefined && setShow(!show)
     onClick && onClick()
   }
 
-  renderChildrenElement = () => {
-    return React.cloneElement(this.props.children as React.ReactElement, {
-      ref: this.childrenRef,
-      onClick: this.handleContentClick,
+  const renderChildrenElement = () => {
+    return React.cloneElement(children as React.ReactElement, {
+      ref: childrenRef,
+      onClick: handleContentClick,
     })
   }
 
-  // access [contentWidth] when updated.
-  componentDidUpdate(prevProps: IPopoverProps, prevState: IPopoverState) {
-    const { contentWidth } = this.state
-    const popperWidth = this.popperRef.current
-      ? this.popperRef.current.getBoundingClientRect().width
-      : 0
-
-    if (
-      (!contentWidth || popperWidth !== contentWidth) &&
-      this.getShowValue()
-    ) {
-      this.setState({ contentWidth: popperWidth })
-    }
-  }
-
-  renderPopover = () => {
-    const { content, position, popoverBodyClassName } = this.props
-    const { childrenPosition, contentWidth } = this.state
+  const renderPopover = () => {
     let style: React.CSSProperties
 
     /*
@@ -130,28 +119,28 @@ export default class Popover extends React.Component<
         }
         break
     }
-    return this.getShowValue()
+    return getShowValue()
       ? ReactDOM.createPortal(
           <div
             className="popover-content-container"
             style={style}
-            ref={this.popperRef}
+            ref={popperRef}
           >
             <div className={`popover-body ${popoverBodyClassName || ""}`}>
               {content}
             </div>
           </div>,
-          this.el
+          el.current
         )
       : null
   }
 
-  render() {
-    return (
-      <React.Fragment>
-        {this.renderChildrenElement()}
-        {this.renderPopover()}
-      </React.Fragment>
-    )
-  }
+  return (
+    <React.Fragment>
+      {renderChildrenElement()}
+      {renderPopover()}
+    </React.Fragment>
+  )
 }
+
+export default Popover
