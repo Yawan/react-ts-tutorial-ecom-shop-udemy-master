@@ -49,7 +49,7 @@ const CheckoutPage: React.FunctionComponent<ICheckoutPageProps> = (props) => {
         </div>
         <div className="cart-items">{cartItems}</div>
         <div className="cart-items-footer">
-          <div>Total</div>
+          <div className="text">Total</div>
           <div className="total-price">${totalPrice}</div>
         </div>
       </div>

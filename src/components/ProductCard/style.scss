@@ -20,5 +20,13 @@
     transform: scale(1.05)
   }
 
-  // .product-details {}
+  &.dark {
+    background-color: white;
+    border-radius: 5px;
+
+    p {
+      color: black;
+    }
+  }
+
 }

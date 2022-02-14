@@ -1,4 +1,5 @@
 import * as React from "react"
+import { ThemeContext } from "../../context/ThemeContext"
 import Button from "../ui/Button"
 import "./style.scss"
 
@@ -78,19 +79,23 @@ export default class Pagination extends React.Component<
   }
   public render() {
     return (
-      <div className="pagination-container">
-        <i
-          onClick={this.handleLeftCaretClick}
-          className="fa fa-caret-left page-caret"
-          aria-hidden="true"
-        ></i>
-        <div className="pages-container">{this.renderPageButtons()}</div>
-        <i
-          onClick={this.handleRightCaretClick}
-          className="fa fa-caret-right page-caret"
-          aria-hidden="true"
-        ></i>
-      </div>
+      <ThemeContext.Consumer>
+        {(theme) => (
+          <div className={`pagination-container ${theme}`}>
+            <i
+              onClick={this.handleLeftCaretClick}
+              className="fa fa-caret-left page-caret"
+              aria-hidden="true"
+            ></i>
+            <div className="pages-container">{this.renderPageButtons()}</div>
+            <i
+              onClick={this.handleRightCaretClick}
+              className="fa fa-caret-right page-caret"
+              aria-hidden="true"
+            ></i>
+          </div>
+        )}
+      </ThemeContext.Consumer>
     )
   }
 }

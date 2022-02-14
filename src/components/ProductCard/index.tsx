@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
+import { ThemeContext } from "../../context/ThemeContext"
 import { Product } from "../../store/reducers/shopReducer"
 import { getProductVariantDetails } from "../../utils/product"
 import ProductCardModal from "../ProductCardModal"
@@ -21,8 +22,14 @@ const ProductCard: React.FunctionComponent<IProductCardProps> = ({
   const onClickOutsideModal = () => {
     setShowDetail(false)
   }
+
+  const theme = useContext(ThemeContext)
+
   return initialVariant ? (
-    <div onClick={onClickProductCard} className="product-card-container">
+    <div
+      onClick={onClickProductCard}
+      className={`product-card-container ${theme}`}
+    >
       <div
         style={{ backgroundImage: `url(${url})` }}
         className="product-img"
