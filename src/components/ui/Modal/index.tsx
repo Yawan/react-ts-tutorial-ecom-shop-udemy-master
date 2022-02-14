@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { useEffect, useRef } from "react"
 import ReactDOM from "react-dom"
 import "./style.css"
 
@@ -8,49 +8,43 @@ export interface IModalProps {
   onClickOutsideModal?(): void
 }
 
-export interface IModalState {}
+const Modal: React.FunctionComponent<IModalProps> = ({
+  show,
+  modalBodyClassName,
+  onClickOutsideModal,
+  children,
+}) => {
+  const root = useRef(document.querySelector("#root") as HTMLDivElement)
+  const el = useRef(document.createElement("div"))
 
-export default class Modal extends React.Component<IModalProps, IModalState> {
-  root: HTMLDivElement
-  el: HTMLDivElement
-  constructor(props: IModalProps) {
-    super(props)
-    this.root = document.querySelector("#root") as HTMLDivElement
-    this.el = document.createElement("div")
-  }
-  componentDidMount() {
-    this.root.appendChild(this.el)
-  }
-  componentWillUnmount() {
-    this.root.removeChild(this.el)
-  }
+  useEffect(() => {
+    root.current.appendChild(el.current)
+    return function cleanup() {
+      root.current.removeChild(el.current)
+    }
+  })
 
-  removeOnClickPropagation = (
+  const removeOnClickPropagation = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     event.stopPropagation()
   }
 
-  onClickOutsideModal = () => {
-    const { onClickOutsideModal } = this.props
+  const handleOnClickOutsideModal = () => {
     onClickOutsideModal && onClickOutsideModal()
   }
 
-  render() {
-    const { show, modalBodyClassName } = this.props
-    return show
-      ? ReactDOM.createPortal(
-          <div
-            onClick={this.removeOnClickPropagation}
-            className="modal-container"
-          >
-            <div onClick={this.onClickOutsideModal} className="modal-overlay" />
-            <div className={`modal-body ${modalBodyClassName || ""}`}>
-              {this.props.children}
-            </div>
-          </div>,
-          this.el
-        )
-      : null
-  }
+  return show
+    ? ReactDOM.createPortal(
+        <div onClick={removeOnClickPropagation} className="modal-container">
+          <div onClick={handleOnClickOutsideModal} className="modal-overlay" />
+          <div className={`modal-body ${modalBodyClassName || ""}`}>
+            {children}
+          </div>
+        </div>,
+        el.current
+      )
+    : null
 }
+
+export default Modal
