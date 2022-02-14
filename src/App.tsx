@@ -1,6 +1,7 @@
 // 3rd party packages
 import { Provider } from "react-redux"
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
+import HandleAllError from "./components/HandleAllError"
 import HeaderNavigation from "./components/HeaderNavigation"
 import { ROUTE } from "./constants/route"
 import AllProductsPage from "./containers/AllProductsPage"
@@ -15,12 +16,14 @@ function App() {
       <BrowserRouter>
         <ThemeContextProvider>
           <HeaderNavigation />
-          <Routes>
-            <Route path={ROUTE.CHECKOUT} element={<CheckoutPage />} />
-            <Route path={ROUTE.ALL_PRODUCTS} element={<AllProductsPage />} />
-            <Route path={ROUTE.HOME} element={<HomePage />} />
-            <Route path="*" element={<Navigate to={ROUTE.HOME} />} />
-          </Routes>
+          <HandleAllError>
+            <Routes>
+              <Route path={ROUTE.CHECKOUT} element={<CheckoutPage />} />
+              <Route path={ROUTE.ALL_PRODUCTS} element={<AllProductsPage />} />
+              <Route path={ROUTE.HOME} element={<HomePage />} />
+              <Route path="*" element={<Navigate to={ROUTE.HOME} />} />
+            </Routes>
+          </HandleAllError>
         </ThemeContextProvider>
       </BrowserRouter>
     </Provider>

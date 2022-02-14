@@ -22,3 +22,8 @@ export const omit = (obj: any, keysToOmit: string[]) => {
   })
   return newObj
 }
+
+export const logErrorToMyService = (error: any, errorInfo: any) => {
+  // todo: implementation on product
+  console.error(error, errorInfo)
+}
