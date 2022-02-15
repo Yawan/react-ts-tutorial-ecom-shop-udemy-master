@@ -21,28 +21,22 @@ const Pagination: React.FunctionComponent<IPaginationProps> = ({
   const theme = useContext(ThemeContext)
   const [selectedPage, setSelectedPage] = useState(1)
 
-  const handleCurrentSelectedPage = (): number => {
-    return overrideSelectedPage || selectedPage
-  }
+  const currentSelectedPage: number = overrideSelectedPage || selectedPage
 
   const handleLeftCaretClick = (): void => {
-    const currentSelectedPage = handleCurrentSelectedPage()
     const newPage =
       currentSelectedPage === 1 ? currentSelectedPage : currentSelectedPage - 1
 
-    setSelectedPage(newPage)
-    onChange(newPage)
+    handlePageClick(newPage)()
   }
 
   const handleRightCaretClick = (): void => {
-    const currentSelectedPage = handleCurrentSelectedPage()
     const newPage =
       currentSelectedPage === numberOfPages
         ? currentSelectedPage
         : currentSelectedPage + 1
 
-    setSelectedPage(newPage)
-    onChange(newPage)
+    handlePageClick(newPage)()
   }
 
   // return a callback function to handle selectedPage in state.
@@ -54,7 +48,6 @@ const Pagination: React.FunctionComponent<IPaginationProps> = ({
   }
 
   const renderPageButtons = () => {
-    const currentSelectedPage = handleCurrentSelectedPage()
     return [...new Array(numberOfPages)].map((_, index) => {
       const page = index + 1
       return (
