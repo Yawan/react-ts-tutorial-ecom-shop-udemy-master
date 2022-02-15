@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { useContext, useState } from "react"
 import { ThemeContext } from "../../context/ThemeContext"
 import Button from "../ui/Button"
 import "./style.scss"
@@ -13,63 +13,55 @@ export interface IPaginationState {
   selectedPage: number
 }
 
-export default class Pagination extends React.Component<
-  IPaginationProps,
-  IPaginationState
-> {
-  constructor(props: IPaginationProps) {
-    super(props)
+const Pagination: React.FunctionComponent<IPaginationProps> = ({
+  numberOfPages,
+  onChange,
+  overrideSelectedPage,
+}) => {
+  const theme = useContext(ThemeContext)
+  const [selectedPage, setSelectedPage] = useState(1)
 
-    this.state = { selectedPage: 1 }
-  }
-
-  currentSelectedPage = (): number => {
-    const { overrideSelectedPage } = this.props
-    const { selectedPage } = this.state
-
+  const handleCurrentSelectedPage = (): number => {
     return overrideSelectedPage || selectedPage
   }
 
-  handleLeftCaretClick = (): void => {
-    const currentSelectedPage = this.currentSelectedPage()
+  const handleLeftCaretClick = (): void => {
+    const currentSelectedPage = handleCurrentSelectedPage()
     const newPage =
       currentSelectedPage === 1 ? currentSelectedPage : currentSelectedPage - 1
 
-    this.setState({ selectedPage: newPage })
-    this.props.onChange(newPage)
+    setSelectedPage(newPage)
+    onChange(newPage)
   }
 
-  handleRightCaretClick = (): void => {
-    const { numberOfPages } = this.props
-    const currentSelectedPage = this.currentSelectedPage()
+  const handleRightCaretClick = (): void => {
+    const currentSelectedPage = handleCurrentSelectedPage()
     const newPage =
       currentSelectedPage === numberOfPages
         ? currentSelectedPage
         : currentSelectedPage + 1
 
-    this.setState({ selectedPage: newPage })
-    this.props.onChange(newPage)
+    setSelectedPage(newPage)
+    onChange(newPage)
   }
 
   // return a callback function to handle selectedPage in state.
-  handlePageClick = (page: number) => () => {
-    const { selectedPage } = this.state
+  const handlePageClick = (page: number) => () => {
     if (selectedPage !== page) {
-      this.setState({ selectedPage: page })
-      this.props.onChange(page)
+      setSelectedPage(page)
+      onChange(page)
     }
   }
 
-  renderPageButtons = () => {
-    const { numberOfPages } = this.props
-    const currentSelectedPage = this.currentSelectedPage()
+  const renderPageButtons = () => {
+    const currentSelectedPage = handleCurrentSelectedPage()
     return [...new Array(numberOfPages)].map((_, index) => {
       const page = index + 1
       return (
         <Button
           key={page}
           selected={currentSelectedPage === page}
-          onClick={this.handlePageClick(page)}
+          onClick={handlePageClick(page)}
           className="page-button"
         >
           {page}
@@ -77,25 +69,21 @@ export default class Pagination extends React.Component<
       )
     })
   }
-  public render() {
-    return (
-      <ThemeContext.Consumer>
-        {(theme) => (
-          <div className={`pagination-container ${theme}`}>
-            <i
-              onClick={this.handleLeftCaretClick}
-              className="fa fa-caret-left page-caret"
-              aria-hidden="true"
-            ></i>
-            <div className="pages-container">{this.renderPageButtons()}</div>
-            <i
-              onClick={this.handleRightCaretClick}
-              className="fa fa-caret-right page-caret"
-              aria-hidden="true"
-            ></i>
-          </div>
-        )}
-      </ThemeContext.Consumer>
-    )
-  }
+  return (
+    <div className={`pagination-container ${theme}`}>
+      <i
+        onClick={handleLeftCaretClick}
+        className="fa fa-caret-left page-caret"
+        aria-hidden="true"
+      ></i>
+      <div className="pages-container">{renderPageButtons()}</div>
+      <i
+        onClick={handleRightCaretClick}
+        className="fa fa-caret-right page-caret"
+        aria-hidden="true"
+      ></i>
+    </div>
+  )
 }
+
+export default Pagination
