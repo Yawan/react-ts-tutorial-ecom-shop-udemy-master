@@ -12,62 +12,65 @@ interface IAllProductsSideBarProps {
   productFilters: ProductFilters
 }
 
-const AllProductsSideBar: React.FunctionComponent<IAllProductsSideBarProps> = ({
-  productFilters,
-}) => {
-  const { filters: userFilters } = useSelector((state: RootState) => state.user)
+const AllProductsSideBar = React.memo<IAllProductsSideBarProps>(
+  ({ productFilters }) => {
+    const { filters: userFilters } = useSelector(
+      (state: RootState) => state.user
+    )
 
-  const dispatch: Dispatch<UserAction> = useDispatch()
+    const dispatch: Dispatch<UserAction> = useDispatch()
 
-  const updateUserFilters = useCallback(
-    (filters: ProductFilters) => {
-      dispatch({
-        type: UserActionType.UPDATE_USER_FILTERS,
-        filters,
-      })
-    },
-    [dispatch]
-  )
+    const updateUserFilters = useCallback(
+      (filters: ProductFilters) => {
+        dispatch({
+          type: UserActionType.UPDATE_USER_FILTERS,
+          filters,
+        })
+      },
+      [dispatch]
+    )
 
-  const handleFilterChange =
-    (filterKey: keyof ProductFilters, filterValue: string) =>
-    (value: boolean) => {
-      // todo: code review
-      let newFilters = { ...userFilters }
-      if (value) {
-        newFilters[filterKey].push(filterValue)
-      } else {
-        newFilters[filterKey] = newFilters[filterKey].filter(
-          (x) => x !== filterValue
-        )
+    const handleFilterChange =
+      (filterKey: keyof ProductFilters, filterValue: string) =>
+      (value: boolean) => {
+        // todo: code review
+        let newFilters = { ...userFilters }
+        if (value) {
+          newFilters[filterKey].push(filterValue)
+        } else {
+          newFilters[filterKey] = newFilters[filterKey].filter(
+            (x) => x !== filterValue
+          )
+        }
+        updateUserFilters(newFilters)
       }
-      updateUserFilters(newFilters)
+    const renderFilters = () => {
+      return Object.keys(productFilters).map((filterKey) => {
+        const filterValues = productFilters[filterKey as keyof ProductFilters]
+        return (
+          <div className="product-filter" key={filterKey}>
+            <p>{capitalizeFirstLetter(filterKey)}</p>
+            {filterValues.map((filterValue) => {
+              return (
+                <div className="filter-checkbox" key={filterValue}>
+                  <Checkbox
+                    onChange={handleFilterChange(
+                      filterKey as keyof ProductFilters,
+                      filterValue
+                    )}
+                  >
+                    {filterValue}
+                  </Checkbox>
+                </div>
+              )
+            })}
+          </div>
+        )
+      })
     }
-  const renderFilters = () => {
-    return Object.keys(productFilters).map((filterKey) => {
-      const filterValues = productFilters[filterKey as keyof ProductFilters]
-      return (
-        <div className="product-filter" key={filterKey}>
-          <p>{capitalizeFirstLetter(filterKey)}</p>
-          {filterValues.map((filterValue) => {
-            return (
-              <div className="filter-checkbox" key={filterValue}>
-                <Checkbox
-                  onChange={handleFilterChange(
-                    filterKey as keyof ProductFilters,
-                    filterValue
-                  )}
-                >
-                  {filterValue}
-                </Checkbox>
-              </div>
-            )
-          })}
-        </div>
-      )
-    })
+    console.log("sidebar")
+    return <div className="all-products-side-bar">{renderFilters()}</div>
   }
-  return <div className="all-products-side-bar">{renderFilters()}</div>
-}
+)
 
 export default AllProductsSideBar
