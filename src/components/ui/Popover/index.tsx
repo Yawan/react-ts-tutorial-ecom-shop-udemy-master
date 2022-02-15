@@ -53,6 +53,16 @@ const Popover: React.FunctionComponent<IPopoverProps> = ({
     })
   const [contentWidth, setContentWidth] = useState(0)
 
+  const handleContentClick = () => {
+    controlShow === undefined && setShow(!show)
+    onClick && onClick()
+  }
+
+  const ChildrenElement = React.cloneElement(children as React.ReactElement, {
+    ref: childrenRef,
+    onClick: handleContentClick,
+  })
+
   useEffect(() => {
     root.current.appendChild(el.current)
 
@@ -83,18 +93,6 @@ const Popover: React.FunctionComponent<IPopoverProps> = ({
 
   const getShowValue = () => {
     return controlShow === undefined ? show : controlShow
-  }
-
-  const handleContentClick = () => {
-    controlShow === undefined && setShow(!show)
-    onClick && onClick()
-  }
-
-  const renderChildrenElement = () => {
-    return React.cloneElement(children as React.ReactElement, {
-      ref: childrenRef,
-      onClick: handleContentClick,
-    })
   }
 
   const renderPopover = () => {
@@ -137,7 +135,7 @@ const Popover: React.FunctionComponent<IPopoverProps> = ({
 
   return (
     <React.Fragment>
-      {renderChildrenElement()}
+      {ChildrenElement}
       {renderPopover()}
     </React.Fragment>
   )
