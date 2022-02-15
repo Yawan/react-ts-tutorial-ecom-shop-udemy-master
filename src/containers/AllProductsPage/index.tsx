@@ -27,26 +27,17 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
     })
   }, [dispatch])
 
-  const updateUserShopProductsPage = useCallback(
-    (shopProductsPage: number) => {
-      dispatch({
-        type: UserActionType.UPDATE_USER_SHOP_PRODUCTS_PAGE,
-        shopProductsPage,
-      })
-    },
-    [dispatch]
-  )
-
   useEffect(() => {
     if (!shopProducts.products.length) {
       fetchAllProducts()
     }
   }, [fetchAllProducts, shopProducts.products])
 
-  const handlePageChange = (selectedPage: number) => {
-    if (shopProductsPage !== selectedPage) {
-      updateUserShopProductsPage(selectedPage)
-    }
+  const updateUserShopProductsPage = (shopProductsPage: number) => {
+    dispatch({
+      type: UserActionType.UPDATE_USER_SHOP_PRODUCTS_PAGE,
+      shopProductsPage,
+    })
   }
 
   const renderAllProducts = () => {
@@ -57,6 +48,12 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
         </div>
       )
     })
+  }
+
+  const handlePageChange = (selectedPage: number) => {
+    if (shopProductsPage !== selectedPage) {
+      updateUserShopProductsPage(selectedPage)
+    }
   }
 
   return (
