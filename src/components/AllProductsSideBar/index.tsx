@@ -1,8 +1,7 @@
 import React, { Dispatch, useCallback } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { UserActionType } from "../../store/action-types"
 import { UserAction } from "../../store/actions/UserAction"
-import { RootState } from "../../store/reducers"
 import { ProductFilters } from "../../store/reducers/shopReducer"
 import { capitalizeFirstLetter } from "../../utils/helper"
 import Checkbox from "../ui/CheckBox"
@@ -10,14 +9,11 @@ import "./style.scss"
 
 interface IAllProductsSideBarProps {
   productFilters: ProductFilters
+  userFilters: ProductFilters
 }
 
 const AllProductsSideBar = React.memo<IAllProductsSideBarProps>(
-  ({ productFilters }) => {
-    const { filters: userFilters } = useSelector(
-      (state: RootState) => state.user
-    )
-
+  ({ productFilters, userFilters }) => {
     const dispatch: Dispatch<UserAction> = useDispatch()
 
     const updateUserFilters = useCallback(
@@ -68,7 +64,6 @@ const AllProductsSideBar = React.memo<IAllProductsSideBarProps>(
         )
       })
     }
-    console.log("sidebar")
     return <div className="all-products-side-bar">{renderFilters()}</div>
   }
 )

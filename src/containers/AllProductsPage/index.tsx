@@ -14,11 +14,9 @@ interface IAllProductsPageProps {}
 const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
   props
 ) => {
-  const { shopProducts, productFilters } = useSelector(
-    (state: RootState) => state.shop
-  )
-  const { shopProductsPage } = useSelector((state: RootState) => state.user)
-
+  const { shop, user } = useSelector((state: RootState) => state)
+  const { shopProducts, productFilters } = shop
+  const { shopProductsPage, filters: userFilters } = user
   const dispatch: Dispatch<ShopAction | UserAction> = useDispatch()
 
   const fetchAllProducts = useCallback(() => {
@@ -33,13 +31,6 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
     }
   }, [fetchAllProducts, shopProducts.products])
 
-  const updateUserShopProductsPage = (shopProductsPage: number) => {
-    dispatch({
-      type: UserActionType.UPDATE_USER_SHOP_PRODUCTS_PAGE,
-      shopProductsPage,
-    })
-  }
-
   const renderAllProducts = () => {
     return shopProducts.products.map((product) => {
       return (
@@ -47,6 +38,13 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
           <ProductCard product={product} />
         </div>
       )
+    })
+  }
+
+  const updateUserShopProductsPage = (shopProductsPage: number) => {
+    dispatch({
+      type: UserActionType.UPDATE_USER_SHOP_PRODUCTS_PAGE,
+      shopProductsPage,
     })
   }
 
@@ -58,7 +56,10 @@ const AllProductsPage: React.FunctionComponent<IAllProductsPageProps> = (
 
   return (
     <div className="all-products-page-container">
-      <AllProductsSideBar productFilters={productFilters}></AllProductsSideBar>
+      <AllProductsSideBar
+        productFilters={productFilters}
+        userFilters={userFilters}
+      ></AllProductsSideBar>
       <div className="all-products-container">
         <div className="all-products">{renderAllProducts()}</div>
         <Pagination
